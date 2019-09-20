@@ -8,11 +8,15 @@ Terraform modules can be referenced like so:
 
 ```
 module "webserver_cluster" {
-  source = "github.com/charliereese/terraform_modules/webserver-cluster?ref=v0.0.1"
-  cluster_name  = "webservers-staging"
-  instance_type = "t2.micro"
-  min_size      = 2
-  max_size      = 2
+  source = "github.com/charliereese/terraform_modules/web_servers?ref=v0.0.1"
+
+  ami                 = "ami-0c55b159cbfafe1f0"
+  cluster_name        = "site-staging"
+  domain_name         = "site.com"
+  min_size            = 1
+  max_size            = 1
+  business_hours_size = 1
+  night_hours_size    = 1
 }
 ```
 
