@@ -19,7 +19,7 @@ provider "aws" {
 
 # Create s3 bucket for storing state
 resource "aws_s3_bucket" "tf-state-storage" {
-  bucket        = "clientelify-terraform-state-storage"
+  bucket        = "${var.app_name}-terraform-state-storage"
   force_destroy = true
 
   versioning {
@@ -42,7 +42,7 @@ resource "aws_s3_bucket" "tf-state-storage" {
 
 # Create a dynamodb table for locking the state file
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name         = "terraform-state-lock"
+  name         = "${var.app_name}-terraform-state-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 

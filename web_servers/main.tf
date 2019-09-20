@@ -39,7 +39,7 @@ data "template_file" "user_data" {
     server_port = var.server_port
     db_address  = data.terraform_remote_state.db.outputs.address
     db_port     = data.terraform_remote_state.db.outputs.port
-    server_text = var.server_text
+    server_text = "Hello, world!"
   }
 }
 
@@ -47,8 +47,8 @@ data "terraform_remote_state" "db" {
   backend = "s3"
 
   config = {
-    bucket = "clientelify-terraform-state-storage"
-    key    = "terraform/staging-state/data"
+    bucket = "${var.app_name}-terraform-state-storage"
+    key    = "terraform/${var.env}-state/data"
     region = "us-east-2"
   }
 }
@@ -60,7 +60,7 @@ data "terraform_remote_state" "db" {
 resource "aws_autoscaling_group" "example" {
   # Depend on the launch configuration's name; 
   # each time it's replaced ASG is also replaced
-  name = "${var.cluster_name}-${aws_launch_configuration.example.name}"
+  name = "${var.app_name}-${var.env}-${aws_launch_configuration.example.name}"
 
   launch_configuration = aws_launch_configuration.example.name
   vpc_zone_identifier  = data.aws_subnet_ids.default.ids
@@ -82,7 +82,7 @@ resource "aws_autoscaling_group" "example" {
 
   tag {
     key                 = "Name"
-    value               = var.cluster_name
+    value               = "${var.app_name}-${var.env}"
     propagate_at_launch = true
   }
 }
@@ -90,7 +90,7 @@ resource "aws_autoscaling_group" "example" {
 resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
   count = var.enable_autoscaling ? 1 : 0
 
-  scheduled_action_name  = "${var.cluster_name}-scale-out-during-business-hours"
+  scheduled_action_name  = "${var.app_name}-${var.env}-scale-out-during-business-hours"
   min_size               = var.min_size
   max_size               = var.max_size
   desired_capacity       = var.business_hours_size
@@ -101,7 +101,7 @@ resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
 resource "aws_autoscaling_schedule" "scale_in_at_night" {
   count = var.enable_autoscaling ? 1 : 0
 
-  scheduled_action_name  = "${var.cluster_name}-scale-in-at-night"
+  scheduled_action_name  = "${var.app_name}-${var.env}-scale-in-at-night"
   min_size               = var.min_size
   max_size               = var.max_size
   desired_capacity       = var.night_hours_size
@@ -110,7 +110,7 @@ resource "aws_autoscaling_schedule" "scale_in_at_night" {
 }
 
 resource "aws_lb_target_group" "asg" {
-  name     = var.cluster_name
+  name     = "${var.app_name}-${var.env}"
   port     = var.server_port
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
@@ -131,7 +131,7 @@ resource "aws_lb_target_group" "asg" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_lb" "example" {
-  name               = var.cluster_name
+  name               = "${var.app_name}-${var.env}"
   load_balancer_type = "application"
   subnets            = data.aws_subnet_ids.default.ids
   security_groups    = [aws_security_group.alb.id]
@@ -225,7 +225,7 @@ data "aws_subnet_ids" "default" {
 # 6.1 Instance security groups
 
 resource "aws_security_group" "instance" {
-  name = "${var.cluster_name}-instance"
+  name = "${var.app_name}-${var.env}-instance"
 }
 
 resource "aws_security_group_rule" "allow_server_http_inbound" {
@@ -241,7 +241,7 @@ resource "aws_security_group_rule" "allow_server_http_inbound" {
 # 6.2 Application load balancer security groups
 
 resource "aws_security_group" "alb" {
-  name = "${var.cluster_name}-alb"
+  name = "${var.app_name}-${var.env}-alb"
 }
 
 resource "aws_security_group_rule" "allow_http_inbound" {
@@ -279,7 +279,7 @@ resource "aws_security_group_rule" "allow_all_outbound" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
-  alarm_name  = "${var.cluster_name}-high-cpu-utilization"
+  alarm_name  = "${var.app_name}-${var.env}-high-cpu-utilization"
   namespace   = "AWS/EC2"
   metric_name = "CPUUtilization"
 
@@ -304,7 +304,7 @@ resource "aws_acm_certificate" "cert" {
   validation_method = "DNS"
 
   tags = {
-    Environment = "staging"
+    Environment = var.env
   }
 
   lifecycle {

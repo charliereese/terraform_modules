@@ -14,16 +14,16 @@ provider "aws" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# 3. DATABASE
+# 2. DATABASE
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_db_instance" "primary" {
-  identifier_prefix      = var.db_identifier
+  identifier_prefix      = "${var.app_name}-${var.env}"
   engine                 = var.db_engine
   allocated_storage      = var.allocated_storage
   max_allocated_storage  = var.max_allocated_storage
   instance_class         = var.db_instance_class
-  name                   = var.db_name
+  name                   = "${var.app_name}"
   username               = var.db_username
   password               = var.db_password
   storage_encrypted      = var.db_encrypted
@@ -33,11 +33,11 @@ resource "aws_db_instance" "primary" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# 4. S3 BUCKET
+# 3. S3 BUCKET
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "web-app" {
-  bucket        = var.s3_bucket_name
+  bucket        = "${var.app_name}-${var.env}-web-assets"
   acl           = "public-read"
   force_destroy = true
 
@@ -51,11 +51,11 @@ resource "aws_s3_bucket" "web-app" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# 5. SECURITY GROUPS
+# 4. SECURITY GROUPS
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "instance" {
-  name = "${var.db_identifier}-db-instance"
+  name = "${var.app_name}-${var.env}-db-instance"
 }
 
 resource "aws_security_group_rule" "allow_server_http_inbound" {
@@ -73,4 +73,3 @@ locals {
   tcp_protocol = "tcp"
   all_ips      = ["0.0.0.0/0"]
 }
-

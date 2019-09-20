@@ -4,8 +4,13 @@
 
 # 1.1 REQUIRED
 
-variable "cluster_name" {
-  description = "The name to use for all the cluster resources"
+variable "env" {
+  description = "Environment (e.g. staging vs prod)"
+  type        = string
+}
+
+variable "app_name" {
+  description = "Name of application (e.g. todoist)"
   type        = string
 }
 
@@ -71,11 +76,5 @@ variable "server_port" {
   description = "The port the server will use for HTTP requests"
   type        = number
   default     = 3000
-}
-
-variable "server_text" {
-  description = "The text the web server should return"
-  default     = "Hello, World"
-  type        = string
 }
 
