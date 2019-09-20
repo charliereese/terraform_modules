@@ -8,7 +8,7 @@ Terraform modules can be referenced like so:
 
 ```
 module "webserver_cluster" {
-  source = "github.com/charliereese/terraform_modules/web_servers?ref=v0.0.1"
+  source = "github.com/charliereese/terraform_modules//web_servers?ref=v0.0.1"
 
   ami                 = "ami-0c55b159cbfafe1f0"
   cluster_name        = "site-staging"
@@ -20,4 +20,6 @@ module "webserver_cluster" {
 }
 ```
 
-Note that variables without default values (like min_size above), as well as any variables you wish to override, must be specified in the module block below source.
+Note: variables without default values (like min_size above), as well as any variables you wish to override, must be specified in the module block below source.
+
+Note: Most modules were introduced after v0.0.1. 
