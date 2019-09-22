@@ -21,7 +21,7 @@ variable "domain_name" {
 
 # 1.2 OPTIONAL
 
-variable "region" {
+variable "app_region" {
   description = "Region for database"
   type        = string
   default     = "us-east-2"
