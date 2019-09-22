@@ -18,7 +18,7 @@ provider "aws" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_launch_configuration" "example" {
-  image_id        = var.ami
+  image_id        = data.aws_ami.image.id
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
 
@@ -28,6 +28,15 @@ resource "aws_launch_configuration" "example" {
   # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+data "aws_ami" "image" {
+  most_recent = true
+  owners      = ["self"]
+  filter {
+    name   = "tag:application"
+    values = ["${var.app_name}-web-server"]
   }
 }
 

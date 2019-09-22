@@ -33,11 +33,6 @@ variable "app_region" {
 
 # 2.1 REQUIRED
 
-variable "ami" {
-  description = "The AMI for the web servers"
-  type        = string
-}
-
 variable "min_size" {
   description = "The minimum number of EC2 Instances in the ASG"
   type        = number
