@@ -3,6 +3,11 @@ output "address" {
   description = "Connect to the database at this endpoint"
 }
 
+output "db_username" {
+  value       = aws_db_instance.primary.username
+  description = "The name of the database"
+}
+
 output "port" {
   value       = aws_db_instance.primary.port
   description = "The port the database is listening on"
