@@ -47,7 +47,7 @@ data "template_file" "user_data" {
   vars = {
     application_name = var.app_name
     db_address       = data.terraform_remote_state.db.outputs.address
-    db_username      = data.terraform_remote_state.db.outputs.username
+    db_username      = data.terraform_remote_state.db.outputs.db_username
   }
 }
 
