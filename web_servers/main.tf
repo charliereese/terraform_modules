@@ -246,6 +246,16 @@ resource "aws_security_group_rule" "allow_server_http_inbound" {
   cidr_blocks = local.all_ips
 }
 
+resource "aws_security_group_rule" "allow_server_ssh_inbound" {
+  type              = "ingress"
+  security_group_id = aws_security_group.instance.id
+
+  from_port   = local.ssh_port
+  to_port     = local.ssh_port
+  protocol    = local.tcp_protocol
+  cidr_blocks = local.all_ips
+}
+
 # 6.2 Application load balancer security groups
 
 resource "aws_security_group" "alb" {
@@ -329,6 +339,7 @@ resource "aws_acm_certificate_validation" "cert" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 locals {
+  ssh_port     = 22
   http_port    = 80
   https_port   = 443
   any_port     = 0
