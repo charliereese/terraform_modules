@@ -22,7 +22,7 @@ resource "aws_launch_configuration" "example" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
 
-  key_pair_name = aws_key_pair.ec2.key_name
+  key_name = aws_key_pair.ec2.key_name
 
   user_data = data.template_file.user_data.rendered
 
