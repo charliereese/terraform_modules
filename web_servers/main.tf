@@ -44,7 +44,7 @@ data "aws_ami" "image" {
 
 # Test server:
 data "template_file" "user_data" {
-  template = file("${path.module}/user-data.sh")
+  template = file("${path.root}/user-data.sh")
 
   vars = {
     application_name = var.app_name
