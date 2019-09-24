@@ -19,6 +19,11 @@ variable "domain_name" {
   type        = string
 }
 
+variable "id_rsa_pub" {
+  description = "Your public SSH key"
+  type        = string
+}
+
 # 1.2 OPTIONAL
 
 variable "app_region" {

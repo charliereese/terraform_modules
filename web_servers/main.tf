@@ -335,8 +335,13 @@ resource "aws_acm_certificate_validation" "cert" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# 9. LOCAL VARIABLES
+# 9. LOCAL VARIABLES + SSH
 # ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_key_pair" "ec2" {
+  key_name   = "ssh-key"
+  public_key = var.id_rsa_pub
+}
 
 locals {
   ssh_port     = 22
