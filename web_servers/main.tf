@@ -259,7 +259,7 @@ resource "aws_security_group_rule" "allow_server_ssh_inbound" {
   cidr_blocks = local.all_ips
 }
 
-resource "aws_security_group_rule" "allow_all_outbound" {
+resource "aws_security_group_rule" "allow_all_server_outbound" {
   type              = "egress"
   security_group_id = aws_security_group.instance.id
 
