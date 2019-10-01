@@ -353,7 +353,7 @@ resource "aws_acm_certificate_validation" "cert" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_key_pair" "ec2" {
-  key_name   = "ssh-key"
+  key_name   = "ssh-key-${var.app_name}-${var.env}"
   public_key = var.id_rsa_pub
 }
 
