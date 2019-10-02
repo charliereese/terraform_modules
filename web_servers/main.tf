@@ -331,6 +331,7 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_acm_certificate" "cert" {
+  count                     = var.env == "prod" ? 0 : 1
   domain_name               = "*.${var.domain_name}"
   subject_alternative_names = ["${var.domain_name}", "*.${var.domain_name}"]
   validation_method         = "DNS"
@@ -345,7 +346,13 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  certificate_arn = "${aws_acm_certificate.cert.arn}"
+  certificate_arn = var.env == "prod" ? data.aws_acm_certificate.cert.arn : aws_acm_certificate.cert.arn
+}
+
+data "aws_acm_certificate" "cert" {
+  domain      = "*.${var.domain_name}"
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
