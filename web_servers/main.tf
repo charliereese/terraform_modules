@@ -346,7 +346,7 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  certificate_arn = var.env == "prod" ? data.aws_acm_certificate.cert.arn : aws_acm_certificate.cert.arn
+  certificate_arn = var.env == "prod" ? data.aws_acm_certificate.cert.arn : aws_acm_certificate.cert[count.index].arn
 }
 
 data "aws_acm_certificate" "cert" {
