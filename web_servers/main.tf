@@ -336,10 +336,9 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu_utilization" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_acm_certificate" "cert" {
-  count                     = var.env == "prod" ? 0 : 1
-  domain_name               = "*.${var.domain_name}"
-  subject_alternative_names = ["${var.domain_name}", "*.${var.domain_name}"]
-  validation_method         = "DNS"
+  count             = var.env == "prod" ? 0 : 1
+  domain_name       = "*.${var.domain_name}"
+  validation_method = "DNS"
 
   tags = {
     Environment = var.env
