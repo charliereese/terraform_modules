@@ -42,7 +42,6 @@ data "aws_ami" "image" {
   }
 }
 
-# Test server:
 data "template_file" "user_data" {
   template = file("${path.root}/user-data.sh")
 
