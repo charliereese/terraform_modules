@@ -40,7 +40,7 @@ resource "aws_instance" "master_worker" {
   key_name  = aws_key_pair.ec2.key_name
   user_data = data.template_file.user_data.rendered
 
-  security_groups = [aws_security_group.master_worker.id]
+  vpc_security_group_ids = [aws_security_group.master_worker.id]
 
   tags = {
     Name = "${var.app_name}-master-worker"
