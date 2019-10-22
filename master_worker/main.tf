@@ -43,7 +43,7 @@ resource "aws_instance" "master_worker" {
   vpc_security_group_ids = [aws_security_group.master_worker.id]
 
   tags = {
-    Name = "${var.app_name}-master-worker"
+    Name = "${var.app_name}-master-worker-${var.env}"
   }
 }
 
