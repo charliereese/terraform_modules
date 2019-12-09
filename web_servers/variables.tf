@@ -78,3 +78,9 @@ variable "server_port" {
   default     = 3000
 }
 
+variable "health_check_path" {
+  description = "The path for the ASG health check"
+  type        = number
+  default     = "/"
+}
+
