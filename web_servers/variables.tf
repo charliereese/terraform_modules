@@ -80,7 +80,7 @@ variable "server_port" {
 
 variable "health_check_path" {
   description = "The path for the ASG health check"
-  type        = number
-  default     = "/"
+  type        = string
+  default     = "/health-check"
 }
 
