@@ -37,7 +37,7 @@ resource "aws_db_instance" "primary" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "web-app" {
-  bucket        = "${var.app_name}-${var.env}-web-assets"
+  bucket        = "${var.app_name}-${var.env}-web-app-assets"
   acl           = "public-read"
   force_destroy = true
 
@@ -55,7 +55,7 @@ resource "aws_s3_bucket" "web-app" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_security_group" "instance" {
-  name = "${var.app_name}-${var.env}-db-instance"
+  name = "${var.app_name}-${var.env}-database-instance"
 }
 
 resource "aws_security_group_rule" "allow_server_http_inbound" {
