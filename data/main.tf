@@ -23,7 +23,7 @@ resource "aws_db_instance" "primary" {
   allocated_storage      = var.allocated_storage
   max_allocated_storage  = var.max_allocated_storage
   instance_class         = var.db_instance_class
-  name                   = "${var.app_name}"
+  name                   = var.app_name
   username               = var.db_username
   password               = var.db_password
   storage_encrypted      = var.db_encrypted
