@@ -18,7 +18,7 @@ provider "aws" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_db_instance" "primary" {
-  identifier_prefix      = "${var.app_name}-${var.env}"
+  identifier_prefix      = "${var.app_name}-${var.env}-database"
   engine                 = var.db_engine
   allocated_storage      = var.allocated_storage
   max_allocated_storage  = var.max_allocated_storage
